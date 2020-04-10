@@ -1,3 +1,5 @@
+const R = require('ramda');
+
 /**
  * @file Домашка по FP ч. 1
  * 
@@ -14,16 +16,28 @@
  */
 
 // 1. Красная звезда, зеленый квадрат, все остальные белые.
-export const validateFieldN1 = ({star, square, triangle, circle}) => {
-    if (triangle !== 'white' || circle !== 'white') {
-        return false;
-    }
-
-    return star === 'red' && square === 'green';
+export const validateFieldN1 = (figures) => {
+    const isValid = R.where({
+        star: R.equals('red'),
+        square: R.equals('green'),
+        triangle: R.equals('white'),
+        circle: R.equals('white')
+      });
+    return isValid(figures);
 };
 
 // 2. Как минимум две фигуры зеленые.
-export const validateFieldN2 = () => false;
+export const validateFieldN2 = (figures) => {
+    const isGreen = (figure) => R.equals(figure, 'green');
+    const filterGreenFigures = R.filter(isGreen, R.__);
+    const isValid = R.compose(
+        R.gte(R.__, 2),
+        R.length,
+        R.keys,
+        filterGreenFigures
+    )(figures);
+    return isValid;
+};
 
 // 3. Количество красных фигур равно кол-ву синих.
 export const validateFieldN3 = () => false;
