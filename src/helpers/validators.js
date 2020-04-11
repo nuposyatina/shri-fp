@@ -89,7 +89,6 @@ export const validateFieldN7 = (figures) => {
 
 // 8. Не красная и не белая звезда.
 export const validateFieldN8 = ({ star }) => {
-    console.log(star)
     const isRed = R.equals(R.__, 'red');
     const isWhite = R.equals(R.__, 'white');
     const redOrWhite = R.converge(R.or, [isRed, isWhite]);
@@ -112,6 +111,12 @@ export const validateFieldN9 = (figures) => {
 };
 
 // 10. Треугольник и квадрат одного цвета (не белого)
-export const validateFieldN10 = (figures) => {
-    
+export const validateFieldN10 = ({ triangle, square }) => {
+    const isSameColors = R.equals(R.__, square);
+    const isNotWhite = R.compose(
+        R.not,
+        R.equals('white')
+    );
+    const isValid = R.converge(R.and, [isSameColors, isNotWhite])(triangle);
+    return isValid
 };
