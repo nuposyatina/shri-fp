@@ -40,13 +40,38 @@ export const validateFieldN2 = (figures) => {
 };
 
 // 3. Количество красных фигур равно кол-ву синих.
-export const validateFieldN3 = () => false;
+export const validateFieldN3 = (figures) => {
+    const isRed = (figure) => R.equals(figure, 'red');
+    const isBlue = (figure) => R.equals(figure, 'blue');
+    const filterBlueFigures = R.filter(isBlue, R.__);
+    const filterRedFigures = R.filter(isRed, R.__);
+    const redFiguresCount = R.compose(
+        R.length,
+        R.keys,
+        filterRedFigures
+    )(figures)
+    const blueFiguresCount = R.compose(
+        R.length,
+        R.keys,
+        filterBlueFigures
+    )(figures);
+    return R.equals(redFiguresCount, blueFiguresCount);
+};
 
 // 4. Синий круг, красная звезда, оранжевый квадрат
-export const validateFieldN4 = () => false;
+export const validateFieldN4 = (figures) => {
+    const isValid = R.where({
+        star: R.equals('red'),
+        square: R.equals('orange'),
+        circle: R.equals('blue')
+      });
+    return isValid(figures);
+};
 
 // 5. Три фигуры одного любого цвета кроме белого (четыре фигуры одного цвета – это тоже true).
-export const validateFieldN5 = () => false;
+export const validateFieldN5 = (figures) => {
+    
+};
 
 // 6. Две зеленые фигуры (одна из них треугольник), еще одна любая красная.
 export const validateFieldN6 = () => false;
