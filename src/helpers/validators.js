@@ -72,26 +72,47 @@ export const validateFieldN4 = (figures) => {
 export const validateFieldN5 = (figures) => {
     const isColor = (color) => R.equals(R.__, color);
     const colorFilter = (color) => R.filter(isColor(color), R.__);
-    const filterRedFigures = colorFilter('red');
-    const filterBlueFigures = colorFilter('blue');
-    const filterGreenFigures = colorFilter('green');
-    const filterOrangeFigures = colorFilter('orange');
-    const checkThreeFigures = (filterFn) => R.compose(
-        R.gte(R.__, 3),
+    const checkCountFigures = (color, count) => R.compose(
+        R.gte(R.__, count),
         R.length,
         R.keys,
-        filterFn
+        colorFilter(color)
     );
-    const threeRedFigures = checkThreeFigures(filterRedFigures);
-    const threeBlueFigures = checkThreeFigures(filterBlueFigures);
-    const threeGreenFigures = checkThreeFigures(filterGreenFigures);
-    const threeOrangeFigures = checkThreeFigures(filterOrangeFigures);
+    const curriedCheckCountFigures = R.curry(checkCountFigures);
+    const checkThreeFigures = curriedCheckCountFigures(R.__, 3);
+    // const checkThreeFigures = (filterFn) => R.compose(
+    //     R.gte(R.__, 3),
+    //     R.length,
+    //     R.keys,
+    //     filterFn
+    // );
+    const threeRedFigures = checkThreeFigures('red');
+    const threeBlueFigures = checkThreeFigures('blue');
+    const threeGreenFigures = checkThreeFigures('green');
+    const threeOrangeFigures = checkThreeFigures('orange');
     const isValid = R.anyPass([threeRedFigures, threeGreenFigures, threeBlueFigures, threeOrangeFigures]);
     return isValid(figures);
 };
 
 // 6. Две зеленые фигуры (одна из них треугольник), еще одна любая красная.
-export const validateFieldN6 = () => false;
+export const validateFieldN6 = (figures) => {
+    const isColor = (color) => R.equals(R.__, color);
+    const colorFilter = (color) => R.filter(isColor(color), R.__);
+    const checkCountFigures = (color, count) => R.compose(
+        R.gte(R.__, count),
+        R.length,
+        R.keys,
+        colorFilter(color)
+    );
+    const curriedCheckCountFigures = R.curry(checkCountFigures);
+    const checkTwoFigures = curriedCheckCountFigures(R.__, 2);
+    const checkOneFigure = curriedCheckCountFigures(R.__, 1);
+    const twoGreenFigures = checkTwoFigures('green');
+    const oneRedFigure = checkOneFigure('red');
+    const hasGreenTriangle = R.propEq('triangle', 'green');
+    const isValid = R.allPass([twoGreenFigures, hasGreenTriangle, oneRedFigure]);
+    return isValid(figures);
+};
 
 // 7. Все фигуры оранжевые.
 export const validateFieldN7 = (figures) => {
