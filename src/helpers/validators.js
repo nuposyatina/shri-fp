@@ -70,20 +70,48 @@ export const validateFieldN4 = (figures) => {
 
 // 5. Три фигуры одного любого цвета кроме белого (четыре фигуры одного цвета – это тоже true).
 export const validateFieldN5 = (figures) => {
-    
+
 };
 
 // 6. Две зеленые фигуры (одна из них треугольник), еще одна любая красная.
 export const validateFieldN6 = () => false;
 
 // 7. Все фигуры оранжевые.
-export const validateFieldN7 = () => false;
+export const validateFieldN7 = (figures) => {
+    const isValid = R.where({
+        star: R.equals('orange'),
+        square: R.equals('orange'),
+        triangle: R.equals('orange'),
+        circle: R.equals('orange')
+      });
+    return isValid(figures);
+};
 
 // 8. Не красная и не белая звезда.
-export const validateFieldN8 = () => false;
+export const validateFieldN8 = ({ star }) => {
+    console.log(star)
+    const isRed = R.equals(R.__, 'red');
+    const isWhite = R.equals(R.__, 'white');
+    const redOrWhite = R.converge(R.or, [isRed, isWhite]);
+    const isValid = R.compose(
+        R.not,
+        redOrWhite
+    )(star)
+    return isValid;
+};
 
 // 9. Все фигуры зеленые.
-export const validateFieldN9 = () => false;
+export const validateFieldN9 = (figures) => {
+    const isValid = R.where({
+        star: R.equals('green'),
+        square: R.equals('green'),
+        triangle: R.equals('green'),
+        circle: R.equals('green')
+      });
+    return isValid(figures);
+};
 
 // 10. Треугольник и квадрат одного цвета (не белого)
-export const validateFieldN10 = () => false;
+export const validateFieldN10 = (figures) => {
+    
+};
