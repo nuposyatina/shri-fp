@@ -70,7 +70,24 @@ export const validateFieldN4 = (figures) => {
 
 // 5. Три фигуры одного любого цвета кроме белого (четыре фигуры одного цвета – это тоже true).
 export const validateFieldN5 = (figures) => {
-
+    const isColor = (color) => R.equals(R.__, color);
+    const colorFilter = (color) => R.filter(isColor(color), R.__);
+    const filterRedFigures = colorFilter('red');
+    const filterBlueFigures = colorFilter('blue');
+    const filterGreenFigures = colorFilter('green');
+    const filterOrangeFigures = colorFilter('orange');
+    const checkThreeFigures = (filterFn) => R.compose(
+        R.gte(R.__, 3),
+        R.length,
+        R.keys,
+        filterFn
+    );
+    const threeRedFigures = checkThreeFigures(filterRedFigures);
+    const threeBlueFigures = checkThreeFigures(filterBlueFigures);
+    const threeGreenFigures = checkThreeFigures(filterGreenFigures);
+    const threeOrangeFigures = checkThreeFigures(filterOrangeFigures);
+    const isValid = R.anyPass([threeRedFigures, threeGreenFigures, threeBlueFigures, threeOrangeFigures]);
+    return isValid(figures);
 };
 
 // 6. Две зеленые фигуры (одна из них треугольник), еще одна любая красная.
