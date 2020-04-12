@@ -76,7 +76,7 @@ const applyValue = (fn) => async (value) => R.tap(fn, value);
 
 const processSequence = async ({value, writeLog, handleSuccess, handleError}) => {
     const process = R.composeP(
-        applyValue(writeLog),
+        handleSuccess,
         getAnimal,
         applyValue(writeLog),
         getRemainderOfThree,
